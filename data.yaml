@@ -1,0 +1,7 @@
+train: D:\AIML Projects\Datasets\NeuroRide\train\images
+val: D:\AIML Projects\Datasets\NeuroRide\val\images
+test: D:\AIML Projects\Datasets\NeuroRide\test\images
+
+nc: 4
+names: ['bike', 'helmet', 'no-helmet', 'number-plate']
+
