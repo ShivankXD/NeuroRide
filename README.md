@@ -22,7 +22,7 @@ NeuroRide is an AI-powered computer vision project designed to detect helmets an
 
 ## Installation
 1. Clone the Repository :
- ``` shell
+ ``` shell []
 git clone https://github.com/yourusername/NeuroRide.git
 cd NeuroRide
 
