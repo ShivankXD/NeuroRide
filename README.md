@@ -29,10 +29,10 @@ cd NeuroRide
 ```
 
 2. Install Dependencies:
-    ``` shell
-    pip install -r requireddependencies.txt
+``` shell
+pip install -r requireddependencies.txt
 
-    ```
+```
 
 3. Download & Set Up Weights:
 - Place YOLO model weights in the models/ folder.
