@@ -28,7 +28,7 @@ if page == "Home":
         - **Check visualizations** of model performance.  
         - **Download processed outputs**.  
     """)
-    st.image("https://source.unsplash.com/800x400/?motorbike,helmet", use_column_width=True)
+    st.image("https://source.unsplash.com/800x400/?motorbike,helmet", use_container_width=True)
 
 elif page == "Upload & Detect":
     st.subheader("Upload Image/Video for Detection")
@@ -40,7 +40,7 @@ elif page == "Upload & Detect":
 
         if uploaded_file.type in ["image/jpeg", "image/png", "image/jpg"]:
             img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
-            st.image(img, caption="Uploaded Image", use_column_width=True)
+            st.image(img, caption="Uploaded Image", use_container_width=True)
 
             # Perform YOLO inference
             results = model(img)
@@ -56,7 +56,7 @@ elif page == "Upload & Detect":
                     cv2.putText(img, f"Conf: {conf:.2f}", (x1, y1 - 10),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
-            st.image(img, caption="Detected Objects", use_column_width=True)
+            st.image(img, caption="Detected Objects", use_container_width=True)
             st.download_button(label="📥 Download Processed Image", data=cv2.imencode('.jpg', img)[1].tobytes(),
                                file_name="output.jpg", mime="image/jpeg")
 
