@@ -27,6 +27,7 @@ if page == "Home":
         - **Upload images/videos** for helmet & number plate detection.  
         - **Check visualizations** of model performance.  
         - **Download processed outputs**.  
+        - ### Note : **This is not a final product but a Beta Version**
     """)
     st.image("https://source.unsplash.com/800x400/?motorbike,helmet", use_container_width=True)
 
