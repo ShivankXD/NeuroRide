@@ -29,7 +29,7 @@ if page == "Home":
         - **Download processed outputs**.  
         - ### Note : **This is not a final product but a Beta Version**
     """)
-    st.image("https://source.unsplash.com/800x400/?motorbike,helmet", use_container_width=True)
+    st.image("NeuroRide.png", use_container_width=True)
 
 elif page == "Upload & Detect":
     st.subheader("Upload Image/Video for Detection")
