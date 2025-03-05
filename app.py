@@ -23,13 +23,14 @@ model = YOLO(r"D:\AIML Projects\Trainedweights\NeuroRide\train\weights\best.pt")
 
 if page == "Home":
     st.subheader("Welcome to NeuroRide!")
+    st.image("NRcrop.png", use_container_width=True)
     st.write("""
         - **Upload images/videos** for helmet & number plate detection.  
         - **Check visualizations** of model performance.  
         - **Download processed outputs**.  
         - ### Note : **This is not a final product but a Beta Version**
     """)
-    st.image("NeuroRide.png", use_container_width=True)
+   
 
 elif page == "Upload & Detect":
     st.subheader("Upload Image/Video for Detection")
