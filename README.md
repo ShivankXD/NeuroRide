@@ -55,4 +55,3 @@ pip install -r requirements.txt
 - Real-time tracking through CCTV networks.
 - Web-based dashboard for monitoring violations.
 
-Using YOLO v8 instead of YOLO v11 due to some glitches 
