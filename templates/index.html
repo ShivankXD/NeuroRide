@@ -61,37 +61,36 @@
                 <img class="img-fluid" src="{{ url_for('static', filename='assets/img/mockup1-removebg-preview.png') }}" alt="..." />
             </div>
         </section>
-      <!-- Analyze Section -->
-<section class="projects-section bg-light" id="analyze">
-    <div class="container px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-lg-10 text-center">
-                <h2 class="text-black mb-5">Upload & Analyze</h2>
-                <div class="mb-5">
-                    <button id="uploadPhotoBtn" class="btn btn-primary btn-lg mx-2">Upload Photo</button>
-                    <button id="uploadVideoBtn" class="btn btn-primary btn-lg mx-2">Upload Video</button>
-                    <button id="liveVideoBtn" class="btn btn-secondary btn-lg mx-2" disabled>Live Video (Coming Soon)</button>
-                </div>
-                <input type="file" id="fileInput" accept="image/*, video/*" style="display: none;" />
-                <div id="uploadedMediaContainer" class="mt-5" style="display: none;">
-                    <div id="mediaPreview" class="position-relative" style="border: 2px dashed #ccc; padding: 20px; border-radius: 10px;">
-                        <img id="uploadedImage" src="#" alt="Uploaded Image" class="img-fluid" style="max-height: 500px; display: none; border-radius: 10px;" />
-                        <video id="uploadedVideo" src="#" controls class="img-fluid" style="max-height: 500px; display: none; border-radius: 10px;"></video>
-                        <div id="scanOverlay" class="position-absolute top-0 start-0 w-100 h-100" style="display: none; pointer-events: none;">
-                            <div class="scan-line" style="position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(to right, rgba(0, 255, 0, 0), rgba(0, 255, 0, 1), rgba(0, 255, 0, 0)); animation: scan 2s linear infinite;"></div>
+        <!-- Analyze Section -->
+        <section class="projects-section bg-light" id="analyze">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-lg-10 text-center">
+                        <h2 class="text-black mb-5">Upload & Analyze</h2>
+                        <div class="mb-5">
+                            <button id="uploadPhotoBtn" class="btn btn-primary btn-lg mx-2">Upload Photo</button>
+                            <button id="uploadVideoBtn" class="btn btn-primary btn-lg mx-2">Upload Video</button>
+                            <button id="liveVideoBtn" class="btn btn-secondary btn-lg mx-2" disabled>Live Video (Coming Soon)</button>
                         </div>
-                    </div>
-                    <div id="analysisResult" class="mt-5 text-center" style="display: none;">
-                        <h3 class="text-black mb-4">Analysis Complete</h3>
-                        <p class="text-black-50 fs-5">Number Plate: <span id="numberPlateResult" class="fw-bold">ABC123</span></p>
-                        <button id="downloadExcelBtn" class="btn btn-success btn-lg">Download Excel Sheet</button>
+                        <input type="file" id="fileInput" accept="image/*, video/*" style="display: none;" />
+                        <div id="uploadedMediaContainer" class="mt-5" style="display: none;">
+                            <div id="mediaPreview" class="position-relative" style="border: 2px dashed #ccc; padding: 20px; border-radius: 10px;">
+                                <img id="uploadedImage" src="#" alt="Uploaded Image" class="img-fluid" style="max-height: 500px; display: none; border-radius: 10px;" />
+                                <video id="uploadedVideo" src="#" controls class="img-fluid" style="max-height: 500px; display: none; border-radius: 10px;"></video>
+                                <div id="scanOverlay" class="position-absolute top-0 start-0 w-100 h-100" style="display: none; pointer-events: none;">
+                                    <div class="scan-line" style="position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(to right, rgba(0, 255, 0, 0), rgba(0, 255, 0, 1), rgba(0, 255, 0, 0)); animation: scan 2s linear infinite;"></div>
+                                </div>
+                            </div>
+                            <div id="analysisResult" class="mt-5 text-center" style="display: none;">
+                                <h3 class="text-black mb-4">Analysis Complete</h3>
+                                <p class="text-black-50 fs-5">Number Plate: <span id="numberPlateResult" class="fw-bold">ABC123</span></p>
+                                <button id="downloadExcelBtn" class="btn btn-success btn-lg">Download Excel Sheet</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
-                
+        </section>
         <!-- Signup-->
         <section class="signup-section" id="signup">
             <div class="container px-4 px-lg-5">
@@ -133,48 +132,6 @@
                             <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3 mt-2">Error sending message!</div></div>
                         </form>
                     </div>
-                </div>
-            </div>
-        </section>
-        <!-- Contact-->
-        <section class="contact-section bg-black">
-            <div class="container px-4 px-lg-5">
-                <div class="row gx-4 gx-lg-5">
-                    <!-- <div class="col-md-4 mb-3 mb-md-0">
-                        <div class="card py-4 h-100">
-                            <div class="card-body text-center">
-                                <i class="fas fa-map-marked-alt text-primary mb-2"></i>
-                                <h4 class="text-uppercase m-0">Address</h4>
-                                <hr class="my-4 mx-auto" />
-                                <div class="small text-black-50">4923 Market Street, Orlando FL</div>
-                            </div>
-                        </div>
-                    </div> -->
-                    <div class="col-md-4 mb-3 mb-md-0">
-                        <div class="card py-4 h-100">
-                            <div class="card-body text-center">
-                                <i class="fas fa-envelope text-primary mb-2"></i>
-                                <h4 class="text-uppercase m-0">Email</h4>
-                                <hr class="my-4 mx-auto" />
-                                <div class="small text-black-50"><a href="#!">hello@yourdomain.com</a></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3 mb-md-0"> 
-                        <div class="card py-4 h-100">
-                            <div class="card-body text-center">
-                                <i class="fas fa-mobile-alt text-primary mb-2"></i>
-                                <h4 class="text-uppercase m-0">Phone</h4>
-                                <hr class="my-4 mx-auto" />
-                                <div class="small text-black-50">+1 (555) 902-8832</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="social d-flex justify-content-center">
-                  <!-- <a class="mx-2" href="#!"><i class="fab fa-twitter"></i></a> 
-                    <a class="mx-2" href="#!"><i class="fab fa-facebook-f"></i></a> --> 
-                    <a class="mx-2" href="github.com/ShivankXD"><i class="fab fa-github"></i></a>
                 </div>
             </div>
         </section>
