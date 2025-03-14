@@ -1,8 +1,4 @@
-ultralytics
-torch
-numpy
+flask
 opencv-python
-pandas
-streamlit
-plotly
-Pillow
+numpy
+openpyxl

@@ -1,88 +1,83 @@
-import streamlit as st
-from ultralytics import YOLO
-import pandas as pd
-import matplotlib.pyplot as plt
-import torch
-import cv2
-import numpy as np
-import plotly.express as px
-from PIL import Image
+from flask import Flask, render_template, request, jsonify, send_file
+import os
+from main import process_file  # Import the process_file function
 
-# Set Page Configuration
-st.set_page_config(page_title="NeuroRide-BETA", layout="wide")
+app = Flask(__name__)
 
-# Sidebar for Mode Selection
-st.sidebar.title("Navigation")
-page = st.sidebar.radio("Choose Mode", ["Home", "Upload & Detect", "Visualizations"])
+# Increase upload size limit to 500MB
+app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024
+app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'mp4', 'avi', 'mov'}
 
-st.title("🚀 NeuroRide-BETA")
-st.write("A smart helmet & number plate detection system.")
+# Ensure the uploads folder exists
+if not os.path.exists(app.config['UPLOAD_FOLDER']):
+    os.makedirs(app.config['UPLOAD_FOLDER'])
 
-# Load Model
-model = YOLO(r"D:\AIML Projects\Trainedweights\NeuroRide\train\weights\best.pt")  # Update path
+# Function to check allowed file extensions
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
-if page == "Home":
-    st.subheader("Welcome to NeuroRide!")
-    st.image("NRcrop.png", use_container_width=True)
-    st.write("""
-        - **Upload images/videos** for helmet & number plate detection.  
-        - **Check visualizations** of model performance.  
-        - **Download processed outputs**.  
-        - ### Note : **This is not a final product but a Beta Version**
-    """)
-   
+# Home route
+@app.route('/')
+def home():
+    return render_template('index.html')
 
-elif page == "Upload & Detect":
-    st.subheader("Upload Image/Video for Detection")
+# File upload and processing route
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file uploaded'}), 400
 
-    uploaded_file = st.file_uploader("Choose an image/video", type=["jpg", "jpeg", "png", "mp4"])
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No file selected'}), 400
 
-    if uploaded_file is not None:
-        file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+    # Check if the file type is allowed
+    if not allowed_file(file.filename):
+        return jsonify({'error': 'Unsupported file type. Only images (png, jpg, jpeg) and videos (mp4, avi, mov) are supported.'}), 400
 
-        if uploaded_file.type in ["image/jpeg", "image/png", "image/jpg"]:
-            img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
-            st.image(img, caption="Uploaded Image", use_container_width=True)
+    try:
+        # Save the uploaded file
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+        file.save(file_path)
 
-            # Perform YOLO inference
-            results = model(img)
+        # Process the file using your computer vision model
+        result = process_file(file_path)
 
-            # Draw bounding boxes
-            for result in results:
-                for box in result.boxes:
-                    x1, y1, x2, y2 = map(int, box.xyxy[0])  # Bounding box
-                    conf = box.conf[0]  # Confidence score
+        # Return the result
+        if isinstance(result, str):  # Video processing completed
+            return jsonify({
+                'success': True,
+                'message': result,
+                'file_path': file_path,
+                'file_type': 'video'
+            })
+        else:  # Image processing completed
+            return jsonify({
+                'success': True,
+                'number_plate': result,
+                'file_path': file_path,
+                'file_type': 'image'
+            })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
-                    # Draw on image
-                    cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                    cv2.putText(img, f"Conf: {conf:.2f}", (x1, y1 - 10),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+# Excel download route
+@app.route('/download_excel')
+def download_excel():
+    try:
+        # Get the latest Excel file
+        current_date = datetime.now().strftime('%Y-%m-%d')
+        excel_file_path = os.path.join(current_date, f"{current_date}.xlsx")
+        
+        if not os.path.exists(excel_file_path):
+            return jsonify({'error': 'No Excel file found for today.'}), 404
+        
+        return send_file(excel_file_path, as_attachment=True)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
-            st.image(img, caption="Detected Objects", use_container_width=True)
-            st.download_button(label="📥 Download Processed Image", data=cv2.imencode('.jpg', img)[1].tobytes(),
-                               file_name="output.jpg", mime="image/jpeg")
-
-        elif uploaded_file.type == "video/mp4":
-            st.video(uploaded_file)
-
-elif page == "Visualizations":
-    st.subheader("📊 Model Performance Visualizations")
-
-    # Load results CSV
-    csv_path = "D:\\AIML Projects\\Trainedweights\\NeuroRide\\train\\results.csv"  # Update this path
-    df = pd.read_csv(csv_path)
-
-    # Button to show/hide visualizations
-    if st.button("🔍 Show Detailed Analysis"):
-        st.subheader("1️⃣ Loss Curves")
-        fig = px.line(df, x="epoch", y=["train/box_loss", "val/box_loss"], title="Train vs Validation Box Loss")
-        st.plotly_chart(fig, use_container_width=True)
-
-        st.subheader("2️⃣ Performance Metrics")
-        fig = px.line(df, x="epoch", y=["metrics/precision(B)", "metrics/recall(B)", "metrics/mAP50(B)", "metrics/mAP50-95(B)"],
-                      title="Precision, Recall, and mAP over Epochs")
-        st.plotly_chart(fig, use_container_width=True)
-
-        st.subheader("3️⃣ Learning Rate Scheduler")
-        fig = px.line(df, x="epoch", y="lr/pg0", title="Learning Rate Progression")
-        st.plotly_chart(fig, use_container_width=True)
+# Run the Flask app
+if __name__ == '__main__':
+    app.run(debug=True)
