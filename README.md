@@ -30,7 +30,7 @@ cd NeuroRide
 
 2. Install Dependencies:
 ``` shell
-pip install -r requireddependencies.txt
+pip install -r requirements.txt
 
 ```
 
@@ -54,5 +54,4 @@ pip install -r requireddependencies.txt
 - Integration with government databases for automated fine generation.
 - Real-time tracking through CCTV networks.
 - Web-based dashboard for monitoring violations.
-
 
