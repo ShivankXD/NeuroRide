@@ -120,30 +120,32 @@ window.addEventListener('DOMContentLoaded', event => {
         }
     });
 
-    // Handle Download Excel Button Click
-    downloadExcelBtn.addEventListener('click', () => {
-        // Trigger the download
-        fetch('/download_excel')
-            .then(response => {
-                if (response.ok) {
-                    return response.blob();
-                } else {
-                    throw new Error('Excel file not found.');
-                }
-            })
-            .then(blob => {
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'analysis_results.xlsx';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(url);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while downloading the Excel file.');
-            });
-    });
+// Handle Download Excel Button Click
+downloadExcelBtn.addEventListener('click', () => {
+    // Trigger the download
+    fetch('/download_excel')
+        .then(response => {
+            if (response.ok) {
+                return response.blob();
+            } else {
+                return response.json().then(errorData => {
+                    throw new Error(errorData.error || 'Failed to download Excel file.');
+                });
+            }
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'analysis_results.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert(error.message || 'An error occurred while downloading the Excel file.');
+        });
+});
 });

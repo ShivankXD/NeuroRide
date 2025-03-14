@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify, send_file
 import os
 from main import process_file  # Import the process_file function
-
+from datetime import datetime 
 app = Flask(__name__)
 
 # Increase upload size limit to 500MB
@@ -67,13 +67,17 @@ def upload_file():
 @app.route('/download_excel')
 def download_excel():
     try:
-        # Get the latest Excel file
+        # Get the current date
         current_date = datetime.now().strftime('%Y-%m-%d')
+        
+        # Construct the Excel file path
         excel_file_path = os.path.join(current_date, f"{current_date}.xlsx")
         
+        # Check if the file exists
         if not os.path.exists(excel_file_path):
             return jsonify({'error': 'No Excel file found for today.'}), 404
         
+        # Send the file to the user
         return send_file(excel_file_path, as_attachment=True)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
